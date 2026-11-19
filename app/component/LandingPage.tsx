@@ -1,174 +1,225 @@
 
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import {
-  Menu,
-  Phone,
-  MessageCircle,
-  CalendarDays,
-  ArrowRight,
-  CheckCircle2,
-  Sparkles,
-  Heart,
-  Clock,
-  ShieldCheck,
-  Star,
-  MapPin,
-  Flower2,
-  Scissors,
-  ChevronRight,
+  Menu, X, Phone, MessageCircle, CalendarDays,
+  ArrowRight, CheckCircle2, Sparkles, Heart,
+  Clock, ShieldCheck, Star, MapPin, Flower2,
+   Scissors, GraduationCap, Shirt,
+  PackageCheck, Quote
 } from "lucide-react";
 
-const WHATSAPP_NUMBER = "91XXXXXXXXXX";
+// Replace with the client's WhatsApp number
+const PHONE = "91XXXXXXXXXX";
+
+const whatsapp = `https://wa.me/${PHONE}?text=${encodeURIComponent(
+  "Hello! I am interested in your saree pleating services. Please share the details."
+)}`;
+
+// Direct image URLs
+const images = {
+  hero: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=1200&q=85",
+  about: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=1000&q=85",
+  red: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=800&q=85",
+  silk: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=800&q=85",
+  wedding: "https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=800&q=85",
+  pink: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=800&q=85",
+  green: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=800&q=85",
+  traditional: "https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=800&q=85",
+};
+
+const navLinks = [
+  ["Home", "#home"],
+  ["About", "#about"],
+  ["Services", "#services"],
+  ["Gallery", "#gallery"],
+  ["Reviews", "#reviews"],
+  ["Contact", "#contact"],
+];
 
 const services = [
   {
     title: "Saree Pre-Pleating",
-    description: "Perfect pleats, ready to wear.",
-    image:
-      "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=700",
+    description: "Beautifully arranged saree pleats for easy and comfortable wearing.",
+    icon: <Scissors size={25} />,
+    image: images.red,
   },
   {
-    title: "Bridal Saree Plating",
-    description: "Look beautiful on your special day.",
-    image:
-      "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=700",
+    title: "Box Folding",
+    description: "Neat and professional box folding for your favourite sarees.",
+    icon: <PackageCheck size={25} />,
+    image: images.silk,
   },
   {
-    title: "Wedding & Events",
-    description: "Elegant styling for every occasion.",
-    image:
-      "https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=700",
-  },
-];
-
-const benefits = [
-  {
-    icon: <Sparkles size={28} />,
-    title: "Perfect Pleats",
-    description: "Neat and elegant finishing.",
+    title: "Saree Ironing",
+    description: "Careful ironing and preparation for a clean, elegant finish.",
+    icon: <Shirt size={25} />,
+    image: images.wedding,
   },
   {
-    icon: <ShieldCheck size={28} />,
-    title: "Fabric Care",
-    description: "Careful handling of your sarees.",
-  },
-  {
-    icon: <Clock size={28} />,
-    title: "Time Saving",
-    description: "Hassle-free and convenient service.",
-  },
-  {
-    icon: <Heart size={28} />,
-    title: "Personalized",
-    description: "Styling for your special occasions.",
+    title: "Pleating Classes",
+    description: "Learn saree pre-pleating and box folding techniques.",
+    icon: <GraduationCap size={25} />,
+    image: images.green,
   },
 ];
 
 const gallery = [
-  "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600",
-  "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=600",
-  "https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=600",
+  { image: images.red, title: "Red Saree Pleating" },
+  { image: images.silk, title: "Traditional Silk Saree" },
+  { image: images.wedding, title: "Wedding Saree Styling" },
+  { image: images.pink, title: "Elegant Saree Look" },
+  { image: images.green, title: "Traditional Collection" },
+  { image: images.traditional, title: "Special Occasion Saree" },
 ];
 
-const LandingPage = () => {
-  const whatsappLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-    "Hello, I am interested in your saree plating service."
-  )}`;
+const benefits = [
+  {
+    icon: <Sparkles size={25} />,
+    title: "Perfect Pleats",
+    desc: "Neat and beautiful finishing",
+  },
+  {
+    icon: <ShieldCheck size={25} />,
+    title: "Fabric Care",
+    desc: "Careful saree handling",
+  },
+  {
+    icon: <Clock size={25} />,
+    title: "Save Time",
+    desc: "Easy saree preparation",
+  },
+  {
+    icon: <Heart size={25} />,
+    title: "Personal Care",
+    desc: "Attention to every detail",
+  },
+];
+
+const reviews = [
+  {
+    name: "Customer One",
+    review: "Beautiful saree pleating work and neat finishing. Really happy with the service!",
+  },
+  {
+    name: "Customer Two",
+    review: "The saree folding was done very neatly. Excellent experience.",
+  },
+  {
+    name: "Customer Three",
+    review: "Very helpful service for my special occasion. Highly appreciated!",
+  },
+];
+
+export default function LandingPage() {
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <main className="min-h-screen bg-[#fffaf0] text-[#39101c]">
+    <main className="min-h-screen overflow-hidden bg-[#fffaf0] text-[#39101c]">
 
       {/* NAVBAR */}
 
-      <header className="sticky top-0 z-50 border-b border-[#d9b76b]/30 bg-[#520d20] text-white shadow-lg">
+      <header className="sticky top-0 z-50 bg-[#520d20] text-white shadow-lg">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
 
-          {/* Logo */}
-
-          <a href="#" className="flex items-center gap-2">
-            <Flower2 size={38} className="text-[#e8c778]" />
-
+          <a href="#home" className="flex items-center gap-2">
+            <Flower2 size={35} className="text-[#e8c778]" />
             <div>
-              <h1 className="font-serif text-xl font-bold tracking-wide sm:text-2xl">
+              <h1 className="font-serif text-xl font-bold sm:text-2xl">
                 SareeGrace
               </h1>
-              <p className="text-[10px] tracking-[3px] text-[#e8c778] sm:text-xs">
-                SAREE PLATING SERVICE
+              <p className="text-[9px] tracking-[2px] text-[#e8c778]">
+                SAREE PLEATING SERVICE
               </p>
             </div>
           </a>
 
-          {/* Desktop Navigation */}
-
-          <nav className="hidden items-center gap-7 text-sm font-medium lg:flex">
-            <a href="#" className="text-[#e8c778]">Home</a>
-            <a href="#about" className="transition hover:text-[#e8c778]">About</a>
-            <a href="#services" className="transition hover:text-[#e8c778]">Services</a>
-            <a href="#gallery" className="transition hover:text-[#e8c778]">Gallery</a>
-            <a href="#reviews" className="transition hover:text-[#e8c778]">Reviews</a>
-            <a href="#contact" className="transition hover:text-[#e8c778]">Contact</a>
+          <nav className="hidden items-center gap-5 lg:flex">
+            {navLinks.map(([name, href]) => (
+              <a
+                key={name}
+                href={href}
+                className="text-sm transition hover:text-[#e8c778]"
+              >
+                {name}
+              </a>
+            ))}
           </nav>
 
-          {/* Desktop Button */}
-
           <a
-            href={whatsappLink}
+            href={whatsapp}
             target="_blank"
             rel="noreferrer"
-            className="hidden items-center gap-2 rounded-full bg-[#e8c778] px-5 py-2.5 text-sm font-bold text-[#520d20] transition hover:bg-white lg:flex"
+            className="hidden items-center gap-2 rounded-full bg-[#e8c778] px-5 py-3 text-sm font-bold text-[#520d20] lg:flex"
           >
-            <MessageCircle size={18} />
+            <MessageCircle size={17} />
             Book Now
           </a>
 
-          {/* Mobile Menu Icon */}
-
-          <a
-            href="#contact"
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
             className="rounded-lg border border-[#e8c778]/50 p-2 text-[#e8c778] lg:hidden"
-            aria-label="Go to contact section"
+            aria-label="Toggle menu"
           >
-            <Menu size={24} />
-          </a>
-
+            {menuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
+
+        {menuOpen && (
+          <nav className="border-t border-white/10 bg-[#520d20] px-5 py-4 lg:hidden">
+            {navLinks.map(([name, href]) => (
+              <a
+                key={name}
+                href={href}
+                onClick={() => setMenuOpen(false)}
+                className="block border-b border-white/10 py-3 text-sm hover:text-[#e8c778]"
+              >
+                {name}
+              </a>
+            ))}
+            <a
+              href={whatsapp}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-4 flex justify-center gap-2 rounded-full bg-[#e8c778] py-3 font-bold text-[#520d20]"
+            >
+              <MessageCircle size={18} /> Book on WhatsApp
+            </a>
+          </nav>
+        )}
       </header>
 
-      {/* HERO SECTION */}
+      {/* HOME */}
 
-      <section className="relative overflow-hidden bg-[#520d20]">
+      <section id="home" className="scroll-mt-20 bg-[#520d20]">
+        <div className="mx-auto grid max-w-7xl items-center gap-10 px-5 py-12 sm:px-8 md:grid-cols-2 md:py-20">
 
-        <div className="mx-auto grid max-w-7xl items-center gap-8 px-5 py-12 sm:px-8 md:grid-cols-2 md:py-20 lg:px-10">
+          <div className="order-2 text-center md:order-1 md:text-left">
+            <span className="inline-flex items-center gap-2 rounded-full border border-[#e8c778]/40 px-4 py-2 text-xs tracking-wider text-[#e8c778]">
+              <Sparkles size={15} />
+              THE ART OF PERFECT PLEATING
+            </span>
 
-          {/* Hero Content */}
-
-          <div className="relative z-10 order-2 text-center md:order-1 md:text-left">
-
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#e8c778]/40 bg-white/5 px-4 py-2 text-xs tracking-wider text-[#e8c778] sm:text-sm">
-              <Sparkles size={16} />
-              ELEGANCE IN EVERY PLEAT
-            </div>
-
-            <h2 className="font-serif text-4xl font-bold leading-tight text-[#fff4dc] sm:text-5xl lg:text-6xl">
+            <h2 className="mt-6 font-serif text-4xl font-bold leading-tight text-[#fff4dc] sm:text-5xl lg:text-6xl">
               Perfect Pleats,
               <span className="block text-[#e8c778]">
                 Beautiful You!
               </span>
             </h2>
 
-            <p className="mx-auto mt-6 max-w-lg text-base leading-7 text-[#f8e7d4]/90 sm:text-lg md:mx-0">
-              Experience professional saree plating services.
-              Beautifully arranged pleats, elegant draping and
-              a perfect look for your special occasions.
+            <p className="mx-auto mt-6 max-w-lg text-sm leading-8 text-[#f8e7d4]/90 sm:text-base md:mx-0">
+              Make every saree special with our professional
+              saree pre-pleating, box folding and ironing services.
+              Save time and look elegant at every special occasion.
             </p>
 
-            <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row md:justify-start">
-
+            <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row md:justify-start">
               <a
-                href={whatsappLink}
+                href={whatsapp}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-[#e8c778] px-7 py-3.5 font-bold text-[#520d20] shadow-lg transition hover:scale-105 hover:bg-white"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-[#e8c778] px-7 py-4 font-bold text-[#520d20] shadow-lg transition hover:scale-105"
               >
                 <CalendarDays size={19} />
                 Book Appointment
@@ -176,410 +227,356 @@ const LandingPage = () => {
               </a>
 
               <a
-                href="#services"
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-[#e8c778] px-7 py-3.5 font-semibold text-[#fff4dc] transition hover:bg-[#e8c778] hover:text-[#520d20]"
+                href="#gallery"
+                className="rounded-full border border-[#e8c778] px-7 py-4 font-semibold text-white hover:bg-white hover:text-[#520d20]"
               >
-                Our Services
+                View Our Work
               </a>
-
             </div>
 
-            <div className="mt-10 flex flex-wrap justify-center gap-6 text-sm text-[#f8e7d4]/90 md:justify-start">
+            <div className="mt-8 flex flex-wrap justify-center gap-5 text-xs text-white/90 md:justify-start sm:text-sm">
               <span className="flex items-center gap-2">
                 <CheckCircle2 className="text-[#e8c778]" size={17} />
-                Elegant Finishing
+                Neat Finishing
               </span>
               <span className="flex items-center gap-2">
                 <CheckCircle2 className="text-[#e8c778]" size={17} />
-                Professional Care
+                Fabric Care
               </span>
             </div>
-
           </div>
 
-          {/* Hero Image */}
-
           <div className="relative order-1 mx-auto w-full max-w-md md:order-2">
-
-            <div className="absolute -inset-3 rounded-[180px_180px_25px_25px] border border-[#e8c778]/50"></div>
+            <div className="absolute -inset-3 rounded-[180px_180px_25px_25px] border border-[#e8c778]/50" />
 
             <img
-              src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=1000"
-              alt="Traditional Indian saree"
-              className="relative h-[350px] w-full rounded-[180px_180px_25px_25px] border-4 border-[#e8c778]/60 object-cover shadow-2xl sm:h-[450px]"
+              src={images.hero}
+              alt="Traditional saree styling"
+              fetchPriority="high"
+              className="relative h-[380px] w-full rounded-[180px_180px_25px_25px] border-4 border-[#e8c778]/50 object-cover shadow-2xl sm:h-[490px]"
             />
 
-            <div className="absolute -bottom-5 left-1/2 w-[85%] -translate-x-1/2 rounded-xl border border-[#e8c778]/50 bg-[#fffaf0] p-4 text-center shadow-xl">
+            <div className="absolute -bottom-5 left-1/2 w-[85%] -translate-x-1/2 rounded-xl bg-[#fffaf0] p-4 text-center shadow-xl">
               <p className="font-serif text-lg font-bold text-[#650f29]">
                 Traditional Beauty
               </p>
               <p className="text-xs text-[#805b42]">
-                Perfectly Plated. Elegantly Styled.
+                Perfectly Pleated. Elegantly Prepared.
               </p>
             </div>
-
           </div>
 
         </div>
       </section>
 
-      {/* HIGHLIGHTS */}
+      {/* BENEFITS */}
 
       <section className="border-b border-[#ead6ad] bg-[#f8e9da]">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-5 px-5 py-9 sm:grid-cols-4 lg:px-10">
-
-          {benefits.map((item, index) => (
-            <div key={index} className="flex flex-col items-center text-center">
-
-              <div className="mb-3 rounded-full bg-[#f1d8b2] p-3 text-[#8a461c]">
+        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-5 py-9 sm:grid-cols-4">
+          {benefits.map((item) => (
+            <div key={item.title} className="text-center">
+              <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-[#f1d8b2] text-[#8a461c]">
                 {item.icon}
               </div>
-
               <h3 className="font-serif text-sm font-bold sm:text-base">
                 {item.title}
               </h3>
-
               <p className="mt-1 text-xs text-[#795e4d] sm:text-sm">
-                {item.description}
+                {item.desc}
               </p>
-
             </div>
           ))}
-
         </div>
       </section>
 
-      {/* ABOUT SECTION */}
+      {/* ABOUT */}
 
-      <section id="about" className="mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:px-10">
-
+      <section id="about" className="scroll-mt-20 mx-auto max-w-7xl px-5 py-16 sm:px-8">
         <div className="grid items-center gap-10 md:grid-cols-2">
+          <img
+            src={images.about}
+            alt="Traditional Indian saree"
+            loading="lazy"
+            className="h-[350px] w-full rounded-2xl object-cover shadow-xl sm:h-[450px]"
+          />
 
-          <div className="relative">
-            <img
-              src="https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=900"
-              alt="Beautiful traditional saree"
-              className="h-[350px] w-full rounded-2xl object-cover shadow-xl sm:h-[450px]"
-            />
-
-            <div className="absolute -bottom-5 -right-3 rounded-xl bg-[#650f29] px-6 py-4 text-center text-white shadow-xl sm:-right-5">
-              <Flower2 className="mx-auto mb-1 text-[#e8c778]" size={28} />
-              <p className="font-serif text-sm font-bold">
-                The Art of
-              </p>
-              <p className="text-sm text-[#e8c778]">
-                Perfect Pleating
-              </p>
-            </div>
-          </div>
-
-          <div className="pt-6 md:pt-0">
-
-            <p className="mb-3 text-sm font-bold uppercase tracking-[3px] text-[#a16a29]">
-              Welcome to SareeGrace
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[3px] text-[#a16a29]">
+              About Our Business
             </p>
-
-            <h2 className="font-serif text-3xl font-bold text-[#650f29] sm:text-4xl">
-              About Our Service
+            <h2 className="mt-3 font-serif text-3xl font-bold text-[#650f29] sm:text-4xl">
+              The Art of Perfect Saree Preparation
             </h2>
-
-            <div className="my-5 h-1 w-20 rounded-full bg-[#d8ad59]"></div>
+            <div className="my-5 h-1 w-20 rounded-full bg-[#d8ad59]" />
 
             <p className="leading-8 text-[#70594a]">
-              We believe every saree deserves a beautiful and
-              elegant look. Our saree plating service focuses
-              on neat pleats, proper finishing and comfortable
-              styling for every special occasion.
+              Every saree deserves a beautiful and elegant look.
+              We provide saree pre-pleating, box folding and
+              ironing services with attention to detail.
             </p>
 
             <p className="mt-4 leading-8 text-[#70594a]">
-              Whether it is a wedding, festival, engagement or
-              family celebration, we help you get ready with
-              confidence and elegance.
+              We also offer saree pleating master classes for
+              those interested in learning professional techniques.
             </p>
 
-            <a
-              href="#contact"
-              className="mt-7 inline-flex items-center gap-2 rounded-full bg-[#650f29] px-7 py-3 font-semibold text-white transition hover:bg-[#8a193b]"
-            >
-              Know More
-              <ArrowRight size={18} />
-            </a>
-
-          </div>
-
-        </div>
-      </section>
-
-      {/* SERVICES SECTION */}
-
-      <section id="services" className="bg-[#f8eee2] px-5 py-16 sm:px-8 lg:px-10">
-
-        <div className="mx-auto max-w-7xl">
-
-          <div className="mb-10 text-center">
-
-            <p className="mb-2 text-sm font-bold uppercase tracking-[3px] text-[#a16a29]">
-              What We Offer
-            </p>
-
-            <h2 className="font-serif text-3xl font-bold text-[#650f29] sm:text-4xl">
-              Our Services
-            </h2>
-
-            <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-[#795e4d] sm:text-base">
-              Discover our saree plating services and get
-              the perfect traditional look for every occasion.
-            </p>
-
-          </div>
-
-          <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
-
-            {services.map((service, index) => (
-              <div
-                key={index}
-                className="group overflow-hidden rounded-2xl border border-[#e7d3b5] bg-[#fffaf0] shadow-md transition duration-300 hover:-translate-y-2 hover:shadow-xl"
-              >
-
-                <div className="overflow-hidden">
-                  <img
-                    src={service.image}
-                    alt={service.title}
-                    className="h-64 w-full object-cover transition duration-500 group-hover:scale-110"
-                  />
-                </div>
-
-                <div className="p-6 text-center">
-
-                  <h3 className="font-serif text-xl font-bold text-[#650f29]">
-                    {service.title}
-                  </h3>
-
-                  <p className="mt-2 text-sm text-[#795e4d]">
-                    {service.description}
-                  </p>
-
-                  <a
-                    href={whatsappLink}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="mt-5 inline-flex items-center gap-2 font-semibold text-[#8a461c] transition hover:text-[#650f29]"
-                  >
-                    Book This Service
-                    <ChevronRight size={18} />
-                  </a>
-
-                </div>
-
-              </div>
-            ))}
-
-          </div>
-        </div>
-      </section>
-
-      {/* WHY CHOOSE US */}
-
-      <section className="mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:px-10">
-
-        <div className="text-center">
-
-          <p className="text-sm font-bold uppercase tracking-[3px] text-[#a16a29]">
-            Our Promise
-          </p>
-
-          <h2 className="mt-2 font-serif text-3xl font-bold text-[#650f29] sm:text-4xl">
-            Why Choose Us?
-          </h2>
-
-        </div>
-
-        <div className="mt-10 grid grid-cols-2 gap-5 md:grid-cols-4">
-
-          {benefits.map((item, index) => (
-            <div
-              key={index}
-              className="rounded-2xl border border-[#ead6ad] bg-white p-5 text-center shadow-sm transition hover:shadow-lg"
-            >
-              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#f8e9da] text-[#8a461c]">
-                {item.icon}
-              </div>
-
-              <h3 className="font-serif font-bold text-[#650f29]">
-                {item.title}
-              </h3>
-
-              <p className="mt-2 text-xs leading-6 text-[#795e4d] sm:text-sm">
-                {item.description}
-              </p>
-            </div>
-          ))}
-
-        </div>
-      </section>
-
-      {/* GALLERY PREVIEW */}
-
-      <section id="gallery" className="bg-[#520d20] px-5 py-16 sm:px-8 lg:px-10">
-
-        <div className="mx-auto max-w-7xl">
-
-          <div className="mb-10 text-center">
-
-            <p className="text-sm font-bold uppercase tracking-[3px] text-[#e8c778]">
-              Our Creations
-            </p>
-
-            <h2 className="mt-2 font-serif text-3xl font-bold text-[#fff4dc] sm:text-4xl">
-              Our Gallery
-            </h2>
-
-            <p className="mt-3 text-sm text-[#f8e7d4]/80">
-              A glimpse of beautiful saree styling and pleating.
-            </p>
-
-          </div>
-
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-
-            {gallery.map((image, index) => (
-              <div
-                key={index}
-                className={`overflow-hidden rounded-xl border-2 border-[#e8c778]/40 ${
-                  index === 2 ? "col-span-2 md:col-span-1" : ""
-                }`}
-              >
-                <img
-                  src={image}
-                  alt={`Saree plating gallery ${index + 1}`}
-                  className="h-56 w-full object-cover transition duration-500 hover:scale-110 sm:h-72"
-                />
-              </div>
-            ))}
-
-          </div>
-
-          <div className="mt-9 text-center">
-            <a
-              href="/gallery"
-              className="inline-flex items-center gap-2 rounded-full bg-[#e8c778] px-7 py-3 font-bold text-[#520d20] transition hover:bg-white"
-            >
-              View All Gallery
-              <ArrowRight size={18} />
-            </a>
-          </div>
-
-        </div>
-      </section>
-
-      {/* REVIEWS PREVIEW */}
-
-      <section id="reviews" className="px-5 py-16 sm:px-8 lg:px-10">
-
-        <div className="mx-auto max-w-7xl">
-
-          <div className="text-center">
-
-            <p className="text-sm font-bold uppercase tracking-[3px] text-[#a16a29]">
-              Happy Customers
-            </p>
-
-            <h2 className="mt-2 font-serif text-3xl font-bold text-[#650f29] sm:text-4xl">
-              Customer Reviews
-            </h2>
-
-            <p className="mt-3 text-sm text-[#795e4d]">
-              Hear from our customers about their experience.
-            </p>
-
-          </div>
-
-          <div className="mx-auto mt-9 max-w-2xl rounded-2xl border border-[#ead6ad] bg-white p-7 text-center shadow-md">
-
-            <div className="flex justify-center gap-1 text-[#d9a52c]">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <Star key={star} size={23} fill="currentColor" />
+            <div className="mt-6 space-y-3">
+              {[
+                "Professional saree pre-pleating",
+                "Neat box folding",
+                "Saree ironing services",
+                "Saree pleating training classes",
+              ].map((item) => (
+                <p key={item} className="flex items-center gap-3 text-sm font-medium text-[#650f29]">
+                  <CheckCircle2 size={19} className="shrink-0 text-[#a16a29]" />
+                  {item}
+                </p>
               ))}
             </div>
 
-            <h3 className="mt-4 font-serif text-xl font-bold text-[#650f29]">
-              Your Experience Matters!
-            </h3>
-
-            <p className="mt-3 leading-7 text-[#795e4d]">
-              We value every customer and strive to provide
-              beautiful, comfortable and professional saree
-              plating services.
-            </p>
-
             <a
-              href="/reviews"
-              className="mt-5 inline-flex items-center gap-2 font-bold text-[#8a461c] hover:text-[#650f29]"
+              href="#contact"
+              className="mt-7 inline-flex items-center gap-2 rounded-full bg-[#650f29] px-7 py-3 font-semibold text-white hover:bg-[#851b3c]"
             >
-              View Customer Reviews
-              <ArrowRight size={18} />
+              Contact Us <ArrowRight size={18} />
             </a>
-
           </div>
-
         </div>
       </section>
 
-      {/* BOOKING BANNER */}
+      {/* SERVICES */}
 
-      <section className="px-5 pb-16 sm:px-8 lg:px-10">
+      <section id="services" className="scroll-mt-20 bg-[#f8eee2] px-5 py-16 sm:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-10 text-center">
+            <p className="text-xs font-bold uppercase tracking-[3px] text-[#a16a29]">
+              What We Offer
+            </p>
+            <h2 className="mt-3 font-serif text-3xl font-bold text-[#650f29] sm:text-4xl">
+              Our Professional Services
+            </h2>
+            <p className="mx-auto mt-3 max-w-xl text-sm leading-7 text-[#795e4d]">
+              Everything you need to prepare your sarees beautifully.
+            </p>
+          </div>
 
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 rounded-3xl bg-gradient-to-r from-[#520d20] to-[#851b3c] px-6 py-10 text-center shadow-xl sm:px-12 md:flex-row md:text-left">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {services.map((service) => (
+              <article
+                key={service.title}
+                className="group overflow-hidden rounded-2xl border border-[#e7d3b5] bg-[#fffaf0] shadow-sm transition hover:-translate-y-2 hover:shadow-xl"
+              >
+                <div className="relative overflow-hidden">
+                  <img
+                    src={service.image}
+                    alt={service.title}
+                    loading="lazy"
+                    className="h-64 w-full object-cover transition duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute left-4 top-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#e8c778] text-[#520d20] shadow-lg">
+                    {service.icon}
+                  </div>
+                </div>
 
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[2px] text-[#e8c778]">
-              Make Your Special Day Beautiful
+                <div className="p-5">
+                  <h3 className="font-serif text-lg font-bold text-[#650f29]">
+                    {service.title}
+                  </h3>
+                  <p className="mt-2 min-h-[65px] text-sm leading-6 text-[#795e4d]">
+                    {service.description}
+                  </p>
+                  <a
+                    href={whatsapp}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-[#8a461c]"
+                  >
+                    Enquire Now <ArrowRight size={17} />
+                  </a>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* GALLERY */}
+
+      <section id="gallery" className="scroll-mt-20 bg-[#520d20] px-5 py-16 sm:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-10 text-center">
+            <p className="text-xs font-bold uppercase tracking-[3px] text-[#e8c778]">
+              Our Collection
+            </p>
+            <h2 className="mt-3 font-serif text-3xl font-bold text-[#fff4dc] sm:text-4xl">
+              Beautiful Saree Creations
+            </h2>
+            <p className="mt-3 text-sm text-white/75">
+              Discover traditional saree styles and elegant pleats.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5">
+            {gallery.map((item) => (
+              <div
+                key={item.title}
+                className="group overflow-hidden rounded-xl border border-[#e8c778]/40 bg-[#fffaf0]"
+              >
+                <div className="overflow-hidden">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    loading="lazy"
+                    className="h-52 w-full object-cover transition duration-500 group-hover:scale-105 sm:h-80"
+                  />
+                </div>
+                <div className="p-3 sm:p-4">
+                  <h3 className="font-serif text-sm font-bold text-[#650f29] sm:text-base">
+                    {item.title}
+                  </h3>
+                  <p className="mt-1 text-xs text-[#a16a29]">
+                    Saree Collection
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* TRAINING CLASSES */}
+
+      <section className="px-5 py-16 sm:px-8">
+        <div className="mx-auto grid max-w-7xl items-center gap-8 overflow-hidden rounded-3xl bg-[#f8e9da] md:grid-cols-2">
+          <div className="p-7 sm:p-12">
+            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#e8c778] text-[#520d20]">
+              <GraduationCap size={30} />
+            </div>
+
+            <p className="mt-5 text-xs font-bold uppercase tracking-[3px] text-[#a16a29]">
+              Learn With Us
+            </p>
+            <h2 className="mt-3 font-serif text-3xl font-bold text-[#650f29] sm:text-4xl">
+              Saree Pleating Master Classes
+            </h2>
+
+            <p className="mt-5 text-sm leading-8 text-[#795e4d]">
+              Interested in learning saree pre-pleating and box folding?
+              Join our classes and learn professional saree preparation
+              techniques.
             </p>
 
+            <a
+              href={whatsapp}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-7 inline-flex items-center gap-2 rounded-full bg-[#650f29] px-7 py-3 font-semibold text-white"
+            >
+              Enquire About Classes <ArrowRight size={18} />
+            </a>
+          </div>
+
+          <img
+            src={images.red}
+            alt="Traditional saree collection"
+            loading="lazy"
+            className="h-full min-h-[300px] w-full object-cover md:min-h-[420px]"
+          />
+        </div>
+      </section>
+
+      {/* REVIEWS */}
+
+      <section id="reviews" className="scroll-mt-20 px-5 py-16 sm:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-10 text-center">
+            <p className="text-xs font-bold uppercase tracking-[3px] text-[#a16a29]">
+              Customer Experiences
+            </p>
+            <h2 className="mt-3 font-serif text-3xl font-bold text-[#650f29] sm:text-4xl">
+              What Our Customers Say
+            </h2>
+          </div>
+
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {reviews.map((review) => (
+              <article
+                key={review.name}
+                className="rounded-2xl border border-[#ead6ad] bg-white p-6 shadow-sm transition hover:shadow-lg"
+              >
+                <Quote size={30} className="text-[#d8ad59]" />
+
+                <div className="mt-4 flex gap-1 text-[#d9a52c]">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star key={star} size={16} fill="currentColor" />
+                  ))}
+                </div>
+
+                <p className="mt-4 text-sm leading-7 text-[#795e4d]">
+                  "{review.review}"
+                </p>
+
+                <div className="mt-5 border-t border-[#ead6ad] pt-4">
+                  <p className="font-serif font-bold text-[#650f29]">
+                    {review.name}
+                  </p>
+                  <p className="mt-1 text-xs text-[#947d6a]">
+                    Sample review
+                  </p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* BOOKING CTA */}
+
+      <section className="px-5 pb-16 sm:px-8">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 rounded-3xl bg-gradient-to-r from-[#520d20] to-[#851b3c] px-6 py-11 text-center shadow-xl md:flex-row md:px-12 md:text-left">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[2px] text-[#e8c778]">
+              Make Your Special Day Beautiful
+            </p>
             <h2 className="mt-3 font-serif text-2xl font-bold text-white sm:text-3xl">
               Ready for Perfect Saree Pleats?
             </h2>
-
-            <p className="mt-3 text-sm text-[#f8e7d4]/80">
+            <p className="mt-3 text-sm text-white/75">
               Contact us today and book your appointment.
             </p>
           </div>
 
           <a
-            href={whatsappLink}
+            href={whatsapp}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex shrink-0 items-center gap-2 rounded-full bg-[#e8c778] px-7 py-4 font-bold text-[#520d20] transition hover:scale-105 hover:bg-white"
+            className="inline-flex shrink-0 items-center gap-2 rounded-full bg-[#e8c778] px-7 py-4 font-bold text-[#520d20] transition hover:scale-105"
           >
             <MessageCircle size={20} />
             Book on WhatsApp
-            <ArrowRight size={18} />
           </a>
-
         </div>
       </section>
 
-      {/* CONTACT SECTION */}
+      {/* CONTACT */}
 
-      <section id="contact" className="bg-[#f8eee2] px-5 py-14 sm:px-8 lg:px-10">
-
+      <section id="contact" className="scroll-mt-20 bg-[#f8eee2] px-5 py-14 sm:px-8">
         <div className="mx-auto max-w-7xl">
-
           <div className="text-center">
-            <p className="text-sm font-bold uppercase tracking-[3px] text-[#a16a29]">
-              Get in Touch
+            <p className="text-xs font-bold uppercase tracking-[3px] text-[#a16a29]">
+              Get In Touch
             </p>
-
-            <h2 className="mt-2 font-serif text-3xl font-bold text-[#650f29]">
+            <h2 className="mt-3 font-serif text-3xl font-bold text-[#650f29]">
               Contact Us
             </h2>
+            <p className="mt-3 text-sm text-[#795e4d]">
+              We would love to hear from you.
+            </p>
           </div>
 
           <div className="mt-9 grid gap-5 sm:grid-cols-3">
-
             <a
-              href={`tel:+${WHATSAPP_NUMBER}`}
+              href={`tel:+${PHONE}`}
               className="rounded-xl bg-white p-6 text-center shadow-sm transition hover:shadow-lg"
             >
               <Phone className="mx-auto mb-3 text-[#8a461c]" size={28} />
@@ -590,12 +587,12 @@ const LandingPage = () => {
             </a>
 
             <a
-              href={whatsappLink}
+              href={whatsapp}
               target="_blank"
               rel="noreferrer"
               className="rounded-xl bg-white p-6 text-center shadow-sm transition hover:shadow-lg"
             >
-              <MessageCircle className="mx-auto mb-3 text-[#8a461c]" size={28} />
+              <MessageCircle className="mx-auto mb-3 text-green-600" size={28} />
               <h3 className="font-bold text-[#650f29]">WhatsApp</h3>
               <p className="mt-2 text-sm text-[#795e4d]">
                 Chat with us
@@ -606,10 +603,9 @@ const LandingPage = () => {
               <MapPin className="mx-auto mb-3 text-[#8a461c]" size={28} />
               <h3 className="font-bold text-[#650f29]">Our Location</h3>
               <p className="mt-2 text-sm text-[#795e4d]">
-                Add business address here
+                Bengaluru, Karnataka
               </p>
             </div>
-
           </div>
         </div>
       </section>
@@ -617,20 +613,16 @@ const LandingPage = () => {
       {/* FOOTER */}
 
       <footer className="bg-[#390817] px-5 pb-8 pt-12 text-white sm:px-8">
-
-        <div className="mx-auto grid max-w-7xl gap-9 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mx-auto grid max-w-7xl gap-8 sm:grid-cols-2 lg:grid-cols-4">
 
           <div>
             <div className="flex items-center gap-2">
               <Flower2 className="text-[#e8c778]" size={35} />
-              <h2 className="font-serif text-2xl font-bold">
-                SareeGrace
-              </h2>
+              <h2 className="font-serif text-2xl font-bold">SareeGrace</h2>
             </div>
-
             <p className="mt-4 text-sm leading-7 text-white/70">
-              Making every saree look beautiful with perfect
-              pleats and elegant traditional styling.
+              Professional saree pre-pleating, box folding,
+              ironing and training services.
             </p>
           </div>
 
@@ -638,13 +630,12 @@ const LandingPage = () => {
             <h3 className="mb-4 font-serif text-lg font-bold text-[#e8c778]">
               Quick Links
             </h3>
-
             <div className="flex flex-col gap-3 text-sm text-white/70">
-              <a href="#" className="hover:text-[#e8c778]">Home</a>
-              <a href="#about" className="hover:text-[#e8c778]">About Us</a>
-              <a href="#services" className="hover:text-[#e8c778]">Services</a>
-              <a href="#gallery" className="hover:text-[#e8c778]">Gallery</a>
-              <a href="#reviews" className="hover:text-[#e8c778]">Reviews</a>
+              {navLinks.map(([name, href]) => (
+                <a key={name} href={href} className="hover:text-[#e8c778]">
+                  {name}
+                </a>
+              ))}
             </div>
           </div>
 
@@ -652,12 +643,10 @@ const LandingPage = () => {
             <h3 className="mb-4 font-serif text-lg font-bold text-[#e8c778]">
               Our Services
             </h3>
-
             <div className="flex flex-col gap-3 text-sm text-white/70">
-              <span>Saree Pre-Pleating</span>
-              <span>Bridal Saree Plating</span>
-              <span>Wedding Plating</span>
-              <span>Special Occasion Styling</span>
+              {services.map((service) => (
+                <span key={service.title}>{service.title}</span>
+              ))}
             </div>
           </div>
 
@@ -665,46 +654,37 @@ const LandingPage = () => {
             <h3 className="mb-4 font-serif text-lg font-bold text-[#e8c778]">
               Connect With Us
             </h3>
-
-            <div className="flex gap-4">
-
-              <a href={whatsappLink} aria-label="WhatsApp">
-                <MessageCircle className="transition hover:text-[#e8c778]" />
+            <div className="flex gap-5">
+              <a href={whatsapp} target="_blank" rel="noreferrer" aria-label="WhatsApp">
+                <MessageCircle className="hover:text-[#e8c778]" />
               </a>
-
-              {/* <a href="https://instagram.com" aria-label="Instagram">
-                <Instagram className="transition hover:text-[#e8c778]" />
-              </a> */}
-
-              <a href={`tel:+${WHATSAPP_NUMBER}`} aria-label="Call">
-                <Phone className="transition hover:text-[#e8c778]" />
+              <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram">
               </a>
-
+              <a href={`tel:+${PHONE}`} aria-label="Call">
+                <Phone className="hover:text-[#e8c778]" />
+              </a>
             </div>
           </div>
 
         </div>
 
         <div className="mx-auto mt-10 max-w-7xl border-t border-white/20 pt-6 text-center text-xs text-white/60">
-          © {new Date().getFullYear()} SareeGrace. All Rights Reserved.
+          © 2026 SareeGrace. All Rights Reserved.
         </div>
-
       </footer>
 
-      {/* FLOATING WHATSAPP BUTTON */}
+      {/* FLOATING WHATSAPP */}
 
       <a
-        href={whatsappLink}
+        href={whatsapp}
         target="_blank"
         rel="noreferrer"
         aria-label="Chat on WhatsApp"
-        className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-green-600 text-white shadow-xl transition hover:scale-110 hover:bg-green-700"
+        className="fixed bottom-5 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-green-600 text-white shadow-xl transition hover:scale-110 sm:right-6"
       >
-        <MessageCircle size={28} />
+        <MessageCircle size={27} />
       </a>
 
     </main>
   );
-};
-
-export default LandingPage;
+}
